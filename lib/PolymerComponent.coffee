@@ -10,9 +10,10 @@ module.exports = (name, inports, outports) ->
       inports.forEach (inport) =>
         @inPorts[inport] = new noflo.Port 'all'
         @inPorts[inport].on 'data', (data) =>
-          @element[inport] = data
-          if @outPorts.element.isAttached()
-            @outPorts.element.send data
+          if toString.call(@element[inport]) is '[object Array]'
+            @element[inport].push data
+          else
+            @element[inport] = data
       @outPorts =
         element: new noflo.Port 'object'
       outports.forEach (outport) =>
@@ -24,8 +25,9 @@ module.exports = (name, inports, outports) ->
         outports.forEach (outport) =>
           return if outport is 'element'
           @element.addEventListener outport, @eventHandlers[outport], false
-        @outPorts.element.send @element
-        @outPorts.element.disconnect()
+        if @outPorts.element.isAttached()
+          @outPorts.element.send @element
+          @outPorts.element.disconnect()
 
     shutdown: ->
       for name, port of @outPorts
