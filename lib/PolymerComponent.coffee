@@ -22,10 +22,14 @@ module.exports = (name, inports, outports) ->
 
       @inPorts.element.on 'data', (@element) =>
         outports.forEach (outport) =>
+          return if outport is 'element'
           @element.addEventListener outport, @eventHandlers[outport], false
+        @outPorts.element.send @element
+        @outPorts.element.disconnect()
 
     shutdown: ->
       for name, port of @outPorts
+        continue if name is 'element'
         @element.removeEventListener name, @eventHandlers[outport], false
         @outPorts[name].disconnect()
       @element = null
