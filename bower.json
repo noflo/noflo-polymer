@@ -1,0 +1,19 @@
+{
+  "name": "noflo-polymer",
+  "main": "index.js",
+  "version": "0.0.0",
+  "authors": [
+    "Henri Bergius <henri.bergius@iki.fi>"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "polymer": "~0.0.20131025"
+  }
+}
