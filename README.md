@@ -15,3 +15,14 @@ For example:
 ```html
 <noflo-polymer name="the-graph" inports="graph width height" outports="changed"></noflo-polymer>
 ```
+
+After this you'll have a `polymer/the-graph` component available with the following ports:
+
+* Input
+  - element (for providing an element instance either queried from DOM or as a result of `document.createElement`
+  - graph (modifies the graph attribute)
+  - width (modifies the width attribute)
+  - height (modifies the height attribute)
+* Output
+  - element (the same element instance, passed through
+  - changed (sends output when the element fires a `changed` event)
