@@ -21,6 +21,6 @@
     "component.json"
   ],
   "noflo": {
-    "loader": "/noflo-polymer/lib/ComponentLoader"
+    "loader": "lib/ComponentLoader"
   }
 }
