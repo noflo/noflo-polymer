@@ -24,12 +24,14 @@
     <script>mocha.setup('bdd');</script>
     <script src="./PolymerElement.js"></script>
     <script>
-      if (window.mochaPhantomJS) {
-        mochaPhantomJS.run();
-      } else {
-        mocha.checkLeaks();
-        mocha.run();
-      }
+      window.addEventListener('WebComponentsReady', function(e) {
+        if (window.mochaPhantomJS) {
+          mochaPhantomJS.run();
+        } else {
+          mocha.checkLeaks();
+          mocha.run();
+        }
+      });
     </script>
   </body>
 </html>
