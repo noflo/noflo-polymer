@@ -10,18 +10,17 @@
     "noflo/noflo": "*"
   },
   "scripts": [
-    "components/PolymerElement.coffee",
+    "lib/ComponentLoader.coffee",
+    "lib/PolymerComponent.coffee",
     "index.js"
   ],
   "files": [
-    "polymer-noflo/polymer-noflo.html"
+    "noflo-polymer/noflo-polymer.html"
   ],
   "json": [
     "component.json"
   ],
   "noflo": {
-    "components": {
-      "PolymerElement": "components/PolymerElement.coffee"
-    }
+    "loader": "/noflo-polymer/lib/ComponentLoader"
   }
 }

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>noflo-polymer in browser</title>
+    <link rel="stylesheet" href="../node_modules/mocha/mocha.css">
+    <script src="../bower_components/polymer/polymer.min.js"></script>
+    <link rel="import" href="../noflo-polymer/noflo-polymer.html">
+    <link rel="import" href="test-element.html">
+    <style type="text/css">
+      #fixtures {
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="mocha"></div>
+    <div id="fixtures">
+      <noflo-polymer name="test-element" inports="first second" outports="result">
+    </div>
+    <script src="../browser/noflo-polymer.js"></script>
+    <script src="http://chaijs.com/chai.js"></script>
+    <script src="../node_modules/mocha/mocha.js"></script>
+    <script>mocha.setup('bdd');</script>
+    <script src="./PolymerElement.js"></script>
+    <script>
+      if (window.mochaPhantomJS) {
+        mochaPhantomJS.run();
+      } else {
+        mocha.checkLeaks();
+        mocha.run();
+      }
+    </script>
+  </body>
+</html>
