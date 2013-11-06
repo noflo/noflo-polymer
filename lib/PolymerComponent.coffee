@@ -19,6 +19,7 @@ module.exports = (name, inports, outports) ->
       outports.forEach (outport) =>
         @outPorts[outport] = new noflo.ArrayPort 'all'
         @eventHandlers[outport] = (event) =>
+          return unless @outPorts[outport].isAttached()
           @outPorts[outport].send event.detail
 
       @inPorts.element.on 'data', (@element) =>
