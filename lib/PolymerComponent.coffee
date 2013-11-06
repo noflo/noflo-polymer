@@ -30,10 +30,10 @@ module.exports = (name, inports, outports) ->
           @outPorts.element.disconnect()
 
     shutdown: ->
-      for name, port of @outPorts
-        continue if name is 'element'
-        @element.removeEventListener name, @eventHandlers[outport], false
-        @outPorts[name].disconnect()
+      outports.forEach (outport) =>
+        return if name is 'element'
+        @element.removeEventListener outport, @eventHandlers[outport], false
+        @outPorts[outport].disconnect()
       @element = null
 
   return PolymerComponent
