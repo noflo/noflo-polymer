@@ -9,6 +9,9 @@ module.exports = (name, inports, outports) ->
         element: new noflo.Port 'object'
       inports.forEach (inport) =>
         @inPorts[inport] = new noflo.Port 'all'
+        @inPorts[inport].on 'connect', (data) =>
+          if toString.call(@element[inport]) is '[object Array]'
+            @element[inport].splice 0, @element[inport].length
         @inPorts[inport].on 'data', (data) =>
           if toString.call(@element[inport]) is '[object Array]'
             @element[inport].push data
