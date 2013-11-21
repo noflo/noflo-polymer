@@ -13,6 +13,9 @@ module.exports = (name, inports, outports) ->
           if toString.call(@element[inport]) is '[object Array]'
             @element[inport].splice 0, @element[inport].length
         @inPorts[inport].on 'data', (data) =>
+          if typeof @element[inport] is 'function'
+            @element[inport] data
+            return
           if toString.call(@element[inport]) is '[object Array]'
             if toString.call(data) is '[object Array]'
               @element[inport] = data
