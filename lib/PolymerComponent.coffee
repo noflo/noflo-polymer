@@ -11,6 +11,11 @@ module.exports = (name, inports, outports) ->
         @inPorts[inport] = new noflo.ArrayPort 'all'
         @inPorts[inport].on 'connect', =>
           if toString.call(@element[inport]) is '[object Array]'
+            # Only clear the array on first connect
+            connected = 0
+            for socket in @inPorts[inport].sockets
+              connected++ if socket.isConnected()
+            return unless connected is 1
             @element[inport].splice 0, @element[inport].length
         @inPorts[inport].on 'data', (data) =>
           if typeof @element[inport] is 'function'
