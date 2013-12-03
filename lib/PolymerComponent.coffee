@@ -6,6 +6,7 @@ module.exports = (name, inports, outports) ->
       @element = null
       @eventHandlers = {}
       @inPorts =
+        selector: new noflo.Port 'string'
         element: new noflo.Port 'object'
       inports.forEach (inport) =>
         @inPorts[inport] = new noflo.ArrayPort 'all'
@@ -30,12 +31,24 @@ module.exports = (name, inports, outports) ->
             @element[inport] = data
       @outPorts =
         element: new noflo.Port 'object'
+        error: new noflo.Port 'object'
       outports.forEach (outport) =>
         @outPorts[outport] = new noflo.ArrayPort 'all'
         @eventHandlers[outport] = (event) =>
           return unless @outPorts[outport].isAttached()
           @outPorts[outport].send event.detail
 
+      @inPorts.selector.on 'data', (selector) =>
+        @element = document.querySelector selector
+        unless @element
+          @error "No element matching '#{selector}' found"
+          return
+        outports.forEach (outport) =>
+          return if outport is 'element'
+          @element.addEventListener outport, @eventHandlers[outport], false
+        if @outPorts.element.isAttached()
+          @outPorts.element.send @element
+          @outPorts.element.disconnect()
       @inPorts.element.on 'data', (@element) =>
         outports.forEach (outport) =>
           return if outport is 'element'
