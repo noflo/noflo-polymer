@@ -64,4 +64,6 @@ module.exports = (name, inports, outports) ->
         @outPorts[outport].disconnect()
       @element = null
 
+  PolymerComponent.getComponent = -> new PolymerComponent
+
   return PolymerComponent
