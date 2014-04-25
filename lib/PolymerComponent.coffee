@@ -1,5 +1,7 @@
 noflo = require 'noflo'
 
+toString = (x) -> ({}).toString.call x
+
 module.exports = (name, inports, outports) ->
   class PolymerComponent extends noflo.Component
     constructor: ->
@@ -11,7 +13,7 @@ module.exports = (name, inports, outports) ->
       inports.forEach (inport) =>
         @inPorts[inport] = new noflo.ArrayPort 'all'
         @inPorts[inport].on 'connect', =>
-          if toString.call(@element[inport]) is '[object Array]'
+          if toString(@element[inport]) is '[object Array]'
             # Only clear the array on first connect
             connected = 0
             for socket in @inPorts[inport].sockets
@@ -22,8 +24,8 @@ module.exports = (name, inports, outports) ->
           if typeof @element[inport] is 'function'
             @element[inport] data
             return
-          if toString.call(@element[inport]) is '[object Array]'
-            if toString.call(data) is '[object Array]'
+          if toString(@element[inport]) is '[object Array]'
+            if toString(data) is '[object Array]'
               @element[inport] = data
               return
             @element[inport].push data
