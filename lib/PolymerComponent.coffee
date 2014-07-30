@@ -2,16 +2,29 @@ noflo = require 'noflo'
 
 toString = (x) -> ({}).toString.call x
 
+bindAllEvents = (element, port) ->
+  originalFire = element.fire.bind element
+  element.fire = (event, detail, toNode) ->
+    port.beginGroup event
+    port.send detail
+    port.endGroup()
+    originalFire event, detail, toNode
+
 module.exports = (name, inports, outports) ->
   class PolymerComponent extends noflo.Component
     constructor: ->
       @element = null
       @eventHandlers = {}
-      @inPorts =
-        selector: new noflo.Port 'string'
-        element: new noflo.Port 'object'
+      @inPorts = new noflo.InPorts
+        selector:
+          datatype: 'string'
+          description: 'DOM selector for getting the element'
+        element:
+          datatype: 'object'
+          description: 'Existing Polymer element instance'
       inports.forEach (inport) =>
-        @inPorts[inport] = new noflo.ArrayPort 'all'
+        @inPorts.add inport,
+          datatype: 'all'
         @inPorts[inport].on 'connect', =>
           if toString(@element[inport]) is '[object Array]'
             # Only clear the array on first connect
@@ -31,11 +44,14 @@ module.exports = (name, inports, outports) ->
             @element[inport].push data
           else
             @element[inport] = data
-      @outPorts =
-        element: new noflo.Port 'object'
-        error: new noflo.Port 'object'
+      @outPorts = new noflo.OutPorts
+        element:
+          datatype: 'object'
+        error:
+          datatype: 'object'
       outports.forEach (outport) =>
-        @outPorts[outport] = new noflo.ArrayPort 'all'
+        @outPorts.add outport,
+          datatype: 'all'
         @eventHandlers[outport] = (event) =>
           return unless @outPorts[outport].isAttached()
           @outPorts[outport].send event.detail
@@ -47,6 +63,7 @@ module.exports = (name, inports, outports) ->
           return
         outports.forEach (outport) =>
           return if outport is 'element'
+          return bindAllEvents @element, @outPorts.event if outport is 'event'
           @element.addEventListener outport, @eventHandlers[outport], false
         if @outPorts.element.isAttached()
           @outPorts.element.send @element
@@ -54,6 +71,7 @@ module.exports = (name, inports, outports) ->
       @inPorts.element.on 'data', (@element) =>
         outports.forEach (outport) =>
           return if outport is 'element'
+          return bindAllEvents @element, @outPorts.event if outport is 'event'
           @element.addEventListener outport, @eventHandlers[outport], false
         if @outPorts.element.isAttached()
           @outPorts.element.send @element

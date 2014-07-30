@@ -1,0 +1,20 @@
+<polymer-element name="test-element2" attributes="first second">
+  <script>
+    Polymer('test-element2', {
+      first: 0,
+      second: 0,
+      firstChanged: function () {
+        this.count();
+      },
+      secondChanged: function () {
+        this.count();
+      },
+      count: function () {
+        if (!this.first || !this.second) {
+          return;
+        }
+        this.fire('result', this.first + this.second);
+      }
+    });
+  </script>
+</polymer-element>
