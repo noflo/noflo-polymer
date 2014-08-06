@@ -5,9 +5,10 @@ toString = (x) -> ({}).toString.call x
 bindAllEvents = (element, port) ->
   originalFire = element.fire.bind element
   element.fire = (event, detail, toNode) ->
-    port.beginGroup event
+    groups = event.split ':'
+    port.beginGroup grp for grp in groups
     port.send detail
-    port.endGroup()
+    port.endGroup() for grp in groups
     originalFire event, detail, toNode
 
 module.exports = (name, inports, outports) ->
