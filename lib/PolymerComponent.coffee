@@ -69,6 +69,9 @@ module.exports = (name, inports, outports) ->
         if @outPorts.element.isAttached()
           @outPorts.element.send @element
           @outPorts.element.disconnect()
+
+        @element.fire 'noflo:ready'
+
       @inPorts.element.on 'data', (@element) =>
         outports.forEach (outport) =>
           return if outport is 'element'
@@ -77,6 +80,8 @@ module.exports = (name, inports, outports) ->
         if @outPorts.element.isAttached()
           @outPorts.element.send @element
           @outPorts.element.disconnect()
+
+        @element.fire 'noflo:ready'
 
     shutdown: ->
       outports.forEach (outport) =>
