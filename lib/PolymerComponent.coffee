@@ -85,7 +85,7 @@ module.exports = (name, inports, outports) ->
           @outPorts.element.disconnect()
         @element.fire 'noflo:ready'
 
-      @inPorts.event.on 'data', (event) ->
+      @inPorts.event.on 'data', (event) =>
         @element?.fire event
 
     shutdown: ->
