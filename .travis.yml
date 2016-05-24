@@ -1,5 +1,13 @@
 language: node_js
 node_js:
-  - '4.2'
+- '4.2'
 before_script:
-  - npm install -g grunt-cli
+- npm install -g grunt-cli
+deploy:
+  provider: npm
+  email: henri.bergius@iki.fi
+  api_key:
+    secure: gP3HxM8nrPSLLoyWJjioIZ117l3zALRZsSyLgRwdrm8s3fNcDlaNi75uzCN1K1dGErgtZEst6GLIXuxwS/xmB/yjPkPHMtvwulzVBYLj77cqWPP7JDoV16u2bdRBJmhUolX0IuSCWeoJ7F3Ro/TQRcLGyJyIJqXvCSNuSJBQaEc=
+  on:
+    tags: true
+    repo: noflo/noflo-polymer
