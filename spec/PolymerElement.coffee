@@ -44,7 +44,6 @@ describe 'Polymer component binding', ->
         inst.inPorts.element.attach element
         inst.inPorts.first.attach first
         inst.inPorts.second.attach second
-        inst.outPorts.result.attach result
         el = document.createElement 'test-element'
         document.querySelector('#fixtures').appendChild el
         element.send el
@@ -54,6 +53,7 @@ describe 'Polymer component binding', ->
         chai.expect(inst.element.first).to.equal 2
     describe 'on event', ->
       it 'should send to outport', (done) ->
+        inst.outPorts.result.attach result
         result.on 'data', (data) ->
           chai.expect(data).to.equal 5
           done()
