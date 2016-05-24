@@ -11,7 +11,8 @@ registerComponent = (loader, binding) ->
   bound = PolymerComponent name, inPorts, outPorts
   loader.registerComponent 'polymer', name, bound
 
-module.exports = (loader) ->
+module.exports = (loader, callback) ->
   bindings = document.querySelectorAll 'noflo-polymer'
   for binding in bindings
     registerComponent loader, binding
+  return callback null
