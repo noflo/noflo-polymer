@@ -55,7 +55,7 @@ describe 'Polymer component binding', ->
         chai.expect(inst.element.first).to.equal 2
     describe 'on event', ->
       it 'should send to outport', (done) ->
-        result.on 'data', (data) ->
+        result.once 'data', (data) ->
           chai.expect(data).to.equal 5
           done()
         second.send 3
