@@ -30,7 +30,8 @@ describe 'Polymer component binding', ->
       event = noflo.internalSocket.createSocket()
     describe 'on component loading', ->
       it 'should be possible to load', (done) ->
-        loader.load 'polymer/test-element', (instance) ->
+        loader.load 'polymer/test-element', (err, instance) ->
+          return done err if err
           chai.expect(instance).to.be.an 'object'
           inst = instance
           done()
