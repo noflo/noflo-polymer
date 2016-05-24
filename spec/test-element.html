@@ -1,8 +1,8 @@
 <polymer-element name="test-element" attributes="first second">
   <script>
     Polymer('test-element', {
-      first: 0,
-      second: 0,
+      first: null,
+      second: null,
       firstChanged: function () {
         this.count();
       },
@@ -10,7 +10,7 @@
         this.count();
       },
       count: function () {
-        if (!this.first || !this.second) {
+        if (this.first === null || this.second === null) {
           return;
         }
         this.fire('result', this.first + this.second);
