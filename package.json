@@ -25,5 +25,8 @@
     "grunt-noflo-browser": "^0.1.3",
     "mocha": "~2.5.2"
   },
+  "scripts": {
+    "test": "grunt test"
+  },
   "keywords": ["noflo", "polymer"]
 }
