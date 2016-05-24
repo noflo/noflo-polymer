@@ -44,20 +44,22 @@ describe 'Polymer component binding', ->
         inst.inPorts.element.attach element
         inst.inPorts.first.attach first
         inst.inPorts.second.attach second
+        inst.outPorts.result.attach result
         el = document.createElement 'test-element'
         document.querySelector('#fixtures').appendChild el
         element.send el
         chai.expect(inst.element).to.be.an 'object'
       it 'should receive the first value', ->
         first.send 2
+      it 'should have made it available via element props', ->
         chai.expect(inst.element.first).to.equal 2
     describe 'on event', ->
       it 'should send to outport', (done) ->
-        inst.outPorts.result.attach result
         result.on 'data', (data) ->
           chai.expect(data).to.equal 5
           done()
         second.send 3
+      it 'should have made it available via element props', ->
         chai.expect(inst.element.second).to.equal 3
   describe 'component with Fluxified event-port mapping', ->
     inst = null
