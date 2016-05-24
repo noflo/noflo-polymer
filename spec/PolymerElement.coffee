@@ -36,7 +36,7 @@ describe 'Polymer component binding', ->
           inst = instance
           done()
       it 'should contain the required inPorts', ->
-        chai.expect(inst.inPorts.ports).to.have.keys 'element', 'selector', 'first', 'second'
+        chai.expect(inst.inPorts.ports).to.have.keys 'element', 'event', 'selector', 'first', 'second'
       it 'should contain the required outPorts', ->
         chai.expect(inst.outPorts.ports).to.have.keys 'element', 'error', 'result'
     describe 'on instantiation', ->
@@ -82,7 +82,7 @@ describe 'Polymer component binding', ->
           inst = instance
           done()
       it 'should contain the required inPorts', ->
-        chai.expect(inst.inPorts.ports).to.have.keys 'element', 'selector', 'first', 'second'
+        chai.expect(inst.inPorts.ports).to.have.keys 'element', 'event', 'selector', 'first', 'second'
       it 'should contain the required outPorts', ->
         chai.expect(inst.outPorts.ports).to.have.keys 'element', 'error', 'event'
     describe 'on instantiation', ->
