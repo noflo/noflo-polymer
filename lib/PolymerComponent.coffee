@@ -23,6 +23,9 @@ module.exports = (name, inports, outports) ->
         element:
           datatype: 'object'
           description: 'Existing Polymer element instance'
+        event:
+          datatype: 'string'
+          description: 'Fire an event on polymer element'
       inports.forEach (inport) =>
         @inPorts.add inport,
           datatype: 'all'
@@ -69,6 +72,9 @@ module.exports = (name, inports, outports) ->
         if @outPorts.element.isAttached()
           @outPorts.element.send @element
           @outPorts.element.disconnect()
+
+        @element.fire 'noflo:ready'
+
       @inPorts.element.on 'data', (@element) =>
         outports.forEach (outport) =>
           return if outport is 'element'
@@ -77,6 +83,10 @@ module.exports = (name, inports, outports) ->
         if @outPorts.element.isAttached()
           @outPorts.element.send @element
           @outPorts.element.disconnect()
+        @element.fire 'noflo:ready'
+
+      @inPorts.event.on 'data', (event) =>
+        @element?.fire event
 
     shutdown: ->
       outports.forEach (outport) =>
