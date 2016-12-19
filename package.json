@@ -18,16 +18,16 @@
     "loader": "lib/ComponentLoader"
   },
   "devDependencies": {
-    "chai": "~3.5.0",
-    "grunt": "~0.4.1",
-    "grunt-bower-install-simple": "~1.2.3",
-    "grunt-coffeelint": "~0.0.6",
-    "grunt-contrib-coffee": "~1.0.0",
-    "grunt-contrib-uglify": "~2.0.0",
-    "grunt-contrib-watch": "~1.0.0",
-    "grunt-mocha-phantomjs": "~4.0.0",
+    "chai": "^3.5.0",
+    "grunt": "^0.4.1",
+    "grunt-bower-install-simple": "^1.2.3",
+    "grunt-coffeelint": "^0.0.6",
+    "grunt-contrib-coffee": "^1.0.0",
+    "grunt-contrib-uglify": "^2.0.0",
+    "grunt-contrib-watch": "^1.0.0",
+    "grunt-mocha-phantomjs": "^4.0.0",
     "grunt-noflo-browser": "^1.0.1",
-    "mocha": "~3.2.0"
+    "mocha": "^3.2.0"
   },
   "scripts": {
     "test": "grunt test"
