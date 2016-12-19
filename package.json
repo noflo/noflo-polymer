@@ -25,12 +25,15 @@
     "grunt-contrib-coffee": "~1.0.0",
     "grunt-contrib-uglify": "~1.0.1",
     "grunt-contrib-watch": "~1.0.0",
-    "grunt-mocha-phantomjs": "~3.0.0",
+    "grunt-mocha-phantomjs": "~4.0.0",
     "grunt-noflo-browser": "^1.0.1",
     "mocha": "~3.2.0"
   },
   "scripts": {
     "test": "grunt test"
   },
-  "keywords": ["noflo", "polymer"]
+  "keywords": [
+    "noflo",
+    "polymer"
+  ]
 }
