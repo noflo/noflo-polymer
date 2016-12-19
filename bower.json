@@ -1,18 +1,6 @@
 {
   "name": "noflo-polymer",
-  "main": "index.js",
-  "version": "0.0.0",
-  "authors": [
-    "Henri Bergius <henri.bergius@iki.fi>"
-  ],
-  "license": "MIT",
-  "ignore": [
-    "**/.*",
-    "node_modules",
-    "bower_components",
-    "test",
-    "tests"
-  ],
+  "description": " !!!! DO NOT ADD DEPENDENCIES HERE. USE NPM INSTEAD. !!!!! ",
   "dependencies": {
     "polymer": "0.5.2",
     "webcomponentsjs": "Polymer/webcomponentsjs#0.5.2"
