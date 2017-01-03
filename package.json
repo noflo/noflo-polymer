@@ -23,7 +23,6 @@
     "coffee-script": "^1.12.2",
     "fbp-loader": "^0.1.1",
     "grunt": "^1.0.1",
-    "grunt-bower-task": "^0.4.0",
     "grunt-coffeelint": "^0.0.16",
     "grunt-contrib-coffee": "^1.0.0",
     "grunt-contrib-uglify": "^2.0.0",
