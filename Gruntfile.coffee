@@ -3,6 +3,11 @@ module.exports = ->
   @initConfig
     pkg: @file.readJSON 'package.json'
 
+    bower:
+      install:
+        options:
+          targetDir: 'bower_modules/'
+
     # CoffeeScript compilation
     coffee:
       spec:
@@ -52,6 +57,7 @@ module.exports = ->
             level: 'warn'
 
   # Grunt plugins used for building
+  @loadNpmTasks 'grunt-bower-task'
   @loadNpmTasks 'grunt-contrib-coffee'
   @loadNpmTasks 'grunt-noflo-browser'
   @loadNpmTasks 'grunt-contrib-uglify'
@@ -63,6 +69,7 @@ module.exports = ->
 
   # Our local tasks
   @registerTask 'build', 'Build NoFlo for the chosen target platform', (target = 'all') =>
+    @task.run 'bower:install'
     @task.run 'coffee'
     if target is 'all' or target is 'browser'
       @task.run 'noflo_browser'
