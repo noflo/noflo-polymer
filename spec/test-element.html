@@ -1,8 +1,19 @@
-<polymer-element name="test-element" attributes="first second">
+<dom-module id="test-element">
   <script>
-    Polymer('test-element', {
-      first: null,
-      second: null,
+    Polymer({
+      is: 'test-element',
+      properties: {
+        first: {
+          value: null,
+          notify: false,
+          observer: 'firstChanged'
+        },
+        second: {
+          value: null,
+          notify: false,
+          observer: 'secondChanged'
+        }
+      },
       firstChanged: function () {
         this.count();
       },
@@ -17,4 +28,4 @@
       }
     });
   </script>
-</polymer-element>
+</dom-module>

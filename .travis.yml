@@ -3,8 +3,6 @@ node_js:
 - '4.2'
 before_script:
 - npm install -g grunt-cli
-- npm install -g bower
-- bower install
 deploy:
   provider: npm
   email: henri.bergius@iki.fi
