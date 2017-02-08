@@ -18,7 +18,7 @@ module.exports = ->
     noflo_browser:
       build:
         files:
-          'browser/noflo-polymer.js': ['component.json']
+          'browser/noflo-polymer.js': ['package.json']
 
     # JavaScript minification for the browser
     uglify:
