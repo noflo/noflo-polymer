@@ -18,7 +18,8 @@ setUp = (component, outports) ->
       # Fluxified event binding
       bindAllEvents component.element, component.outPorts.event
       return
-    component.element.addEventListener outport, component.eventHandlers[outport], false
+    handler = component.eventHandlers[outport]
+    component.element.addEventListener outport, handler, false
   if component.outPorts.element.isAttached()
     component.outPorts.element.send component.element
     component.outPorts.element.disconnect()
