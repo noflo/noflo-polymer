@@ -12,7 +12,9 @@
   },
   "license": "MIT",
   "dependencies": {
-    "noflo": "0.x >= 0.7"
+    "@polymer/polymer": "^1.2.5-npm-test.2",
+    "noflo": "0.x >= 0.7",
+    "webcomponents.js": "^0.7.23"
   },
   "noflo": {
     "loader": "lib/ComponentLoader"
