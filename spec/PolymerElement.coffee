@@ -26,7 +26,6 @@ describe 'Polymer component binding', ->
       element = noflo.internalSocket.createSocket()
       first = noflo.internalSocket.createSocket()
       second = noflo.internalSocket.createSocket()
-      result = noflo.internalSocket.createSocket()
       event = noflo.internalSocket.createSocket()
     describe 'on component loading', ->
       it 'should be possible to load', (done) ->
@@ -44,18 +43,22 @@ describe 'Polymer component binding', ->
         inst.inPorts.element.attach element
         inst.inPorts.first.attach first
         inst.inPorts.second.attach second
-        inst.outPorts.result.attach result
         el = document.createElement 'test-element'
         document.querySelector('#fixtures').appendChild el
         element.send el
-        chai.expect(inst.element).to.be.an 'object'
+        chai.expect(inst.element).to.be.ok
       it 'should receive the first value', ->
         first.send 2
       it 'should have made it available via element props', ->
         chai.expect(inst.element.first).to.equal 2
     describe 'on event', ->
+      beforeEach ->
+        result = noflo.internalSocket.createSocket()
+        inst.outPorts.result.attach result
+      afterEach ->
+        inst.outPorts.result.detach result
       it 'should send to outport', (done) ->
-        result.once 'data', (data) ->
+        result.on 'data', (data) ->
           chai.expect(data).to.equal 5
           done()
         second.send 3
@@ -66,13 +69,11 @@ describe 'Polymer component binding', ->
     element = null
     first = null
     second = null
-    result = null
     event = null
     before ->
       element = noflo.internalSocket.createSocket()
       first = noflo.internalSocket.createSocket()
       second = noflo.internalSocket.createSocket()
-      result = noflo.internalSocket.createSocket()
       event = noflo.internalSocket.createSocket()
     describe 'on component loading', ->
       it 'should be possible to load', (done) ->
@@ -90,15 +91,18 @@ describe 'Polymer component binding', ->
         inst.inPorts.element.attach element
         inst.inPorts.first.attach first
         inst.inPorts.second.attach second
-        inst.outPorts.event.attach event
         el = document.createElement 'test-element2'
         document.querySelector('#fixtures').appendChild el
         element.send el
-        chai.expect(inst.element).to.be.an 'object'
+        chai.expect(inst.element).to.be.ok
       it 'should receive the first value', ->
         first.send 2
         chai.expect(inst.element.first).to.equal 2
     describe 'on event', ->
+      before ->
+        inst.outPorts.event.attach event
+      after ->
+        inst.outPorts.event.detach event
       it 'should send to outport', (done) ->
         groups = []
         event.on 'begingroup', (group) ->
