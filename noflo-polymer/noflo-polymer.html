@@ -1,6 +1,12 @@
-<polymer-element name="noflo-polymer" attributes="element inports outports">
+<dom-module id="noflo-polymer">
   <script>
-    Polymer('noflo-polymer', {
+    Polymer({
+      is: 'noflo-polymer',
+      properties: {
+        element: { notify: true },
+        inports: { notify: true },
+        outports: { notify: true }
+      }
     });
   </script>
-</polymer-element>
+</dom-module>
