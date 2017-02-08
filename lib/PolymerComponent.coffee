@@ -7,94 +7,97 @@ bindAllEvents = (element, port) ->
   element.fire = (event, detail, toNode) ->
     groups = event.split ':'
     port.beginGroup grp for grp in groups
-    port.send detail
+    port.send detail?.value or detail
     port.endGroup() for grp in groups
     originalFire event, detail, toNode
 
+setUp = (component, outports) ->
+  outports.forEach (outport) ->
+    return if outport is 'element'
+    if outport is 'event'
+      # Fluxified event binding
+      bindAllEvents component.element, component.outPorts.event
+      return
+    component.element.addEventListener outport, component.eventHandlers[outport], false
+  if component.outPorts.element.isAttached()
+    component.outPorts.element.send component.element
+    component.outPorts.element.disconnect()
+  component.element.fire 'noflo:ready'
+
 module.exports = (name, inports, outports) ->
-  class PolymerComponent extends noflo.Component
-    constructor: ->
-      @element = null
-      @eventHandlers = {}
-      @inPorts = new noflo.InPorts
-        selector:
-          datatype: 'string'
-          description: 'DOM selector for getting the element'
-        element:
-          datatype: 'object'
-          description: 'Existing Polymer element instance'
-        event:
-          datatype: 'string'
-          description: 'Fire an event on polymer element'
-      inports.forEach (inport) =>
-        @inPorts.add inport,
-          datatype: 'all'
-        @inPorts[inport].on 'connect', =>
-          if toString(@element[inport]) is '[object Array]'
-            # Only clear the array on first connect
-            connected = 0
-            for socket in @inPorts[inport].sockets
-              connected++ if socket.isConnected()
-            return unless connected is 1
-            @element[inport].splice 0, @element[inport].length
-        @inPorts[inport].on 'data', (data) =>
-          if typeof @element[inport] is 'function'
-            @element[inport] data
-            return
-          if toString(@element[inport]) is '[object Array]'
-            if toString(data) is '[object Array]'
-              @element[inport] = data
-              return
-            @element[inport].push data
-          else
-            @element[inport] = data
-      @outPorts = new noflo.OutPorts
-        element:
-          datatype: 'object'
-        error:
-          datatype: 'object'
-      outports.forEach (outport) =>
-        @outPorts.add outport,
-          datatype: 'all'
-        @eventHandlers[outport] = (event) =>
-          return unless @outPorts[outport].isAttached()
-          @outPorts[outport].send event.detail
+  return ->
+    c = new noflo.Component
+    c.element = null
+    c.eventHandlers = {}
+    c.inPorts.add 'selector',
+      datatype: 'string'
+      description: 'DOM selector for getting the element'
+    c.inPorts.add 'element',
+      datatype: 'object'
+      description: 'Existing Polymer element instance'
+    c.inPorts.add 'event',
+      datatype: 'string'
+      description: 'Fire an event on polymer element'
+    c.outPorts.add 'element',
+      datatype: 'object'
+    c.outPorts.add 'error',
+      datatype: 'object'
 
-      @inPorts.selector.on 'data', (selector) =>
-        @element = document.querySelector selector
-        unless @element
-          @error "No element matching '#{selector}' found"
+    inports.forEach (inport) ->
+      # Add exposed inports
+      c.inPorts.add inport,
+        datatype: 'all'
+      c.inPorts[inport].on 'connect', ->
+        return unless toString(c.element[inport]) is '[object Array]'
+        # Only clear the array on first connect
+        connected = 0
+        for socket in c.inPorts[inport].sockets
+          connected++ if socket.isConnected()
+        return unless connected is 1
+        c.element[inport].splice 0, c.element[inport].length
+      c.inPorts[inport].on 'data', (data) ->
+        if typeof c.element[inport] is 'function'
+          # Port handler is a function, call it with the given value
+          c.element[inport] data
           return
-        outports.forEach (outport) =>
-          return if outport is 'element'
-          return bindAllEvents @element, @outPorts.event if outport is 'event'
-          @element.addEventListener outport, @eventHandlers[outport], false
-        if @outPorts.element.isAttached()
-          @outPorts.element.send @element
-          @outPorts.element.disconnect()
+        if toString(c.element[inport]) is '[object Array]'
+          if toString(data) is '[object Array]'
+            c.element[inport] = data
+            return
+          c.element[inport].push data
+        else
+          c.element[inport] = data
 
-        @element.fire 'noflo:ready'
+    outports.forEach (outport) ->
+      # Add exposed outport
+      c.outPorts.add outport,
+        datatype: 'all'
+      c.eventHandlers[outport] = (event) ->
+        # Register event handler for the outport event
+        return unless c.outPorts[outport].isAttached()
+        c.outPorts[outport].send event.detail
 
-      @inPorts.element.on 'data', (@element) =>
-        outports.forEach (outport) =>
-          return if outport is 'element'
-          return bindAllEvents @element, @outPorts.event if outport is 'event'
-          @element.addEventListener outport, @eventHandlers[outport], false
-        if @outPorts.element.isAttached()
-          @outPorts.element.send @element
-          @outPorts.element.disconnect()
-        @element.fire 'noflo:ready'
+    # Bind instance to a received query selector result
+    c.inPorts.selector.on 'data', (selector) ->
+      c.element = document.querySelector selector
+      unless c.element
+        c.error "No element matching '#{selector}' found"
+        return
+      setUp c, outports
+    c.inPorts.element.on 'data', (element) ->
+      c.element = element
+      unless c.element
+        c.error "No element provided"
+        return
+      setUp c, outports
+    c.inPorts.event.on 'data', (event) ->
+      c.element?.fire event
 
-      @inPorts.event.on 'data', (event) =>
-        @element?.fire event
-
-    shutdown: ->
-      outports.forEach (outport) =>
+    c.shutdown = ->
+      outports.forEach (outport) ->
         return if name is 'element'
-        @element.removeEventListener outport, @eventHandlers[outport], false
-        @outPorts[outport].disconnect()
-      @element = null
+        c.element.removeEventListener outport, c.eventHandlers[outport], false
+        c.outPorts[outport].disconnect()
+      c.element = null
 
-  PolymerComponent.getComponent = -> new PolymerComponent
-
-  return PolymerComponent
+    return c
