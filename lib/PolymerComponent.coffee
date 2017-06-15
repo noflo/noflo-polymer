@@ -5,6 +5,10 @@ toString = (x) -> ({}).toString.call x
 bindAllEvents = (element, port) ->
   originalFire = element.fire.bind element
   element.fire = (event, detail, toNode) ->
+    if event.indexOf('-changed') isnt -1
+      # Polymer 1.x fires an event for each changed property. Ignore these
+      originalFire event, detail, toNode
+      return
     groups = event.split ':'
     port.beginGroup grp for grp in groups
     port.send detail?.value or detail
