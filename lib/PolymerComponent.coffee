@@ -2,9 +2,13 @@ noflo = require 'noflo'
 
 toString = (x) -> ({}).toString.call x
 
-bindAllEvents = (element, port) ->
+bindAllEvents = (element, port, outports) ->
   originalFire = element.fire.bind element
   element.fire = (event, detail, toNode) ->
+    if event in outports
+      # If an event has a dedicated port, then it should not be bound here
+      originalFire event, detail, toNode
+      return
     if event.indexOf('-changed') isnt -1
       # Polymer 1.x fires an event for each changed property. Ignore these
       originalFire event, detail, toNode
@@ -20,7 +24,7 @@ setUp = (component, outports) ->
     return if outport is 'element'
     if outport is 'event'
       # Fluxified event binding
-      bindAllEvents component.element, component.outPorts.event
+      bindAllEvents component.element, component.outPorts.event, outports
       return
     handler = component.eventHandlers[outport]
     component.element.addEventListener outport, handler, false
