@@ -82,7 +82,7 @@ module.exports = (name, inports, outports) ->
       @inPorts.element.on 'data', (@element) =>
         outports.forEach (outport) =>
           return if outport is 'element'
-          return bindAllEvents @element, @outPorts.event if outport is 'event'
+          return bindAllEvents @element, @outPorts.event, outports if outport is 'event'
           @element.addEventListener outport, @eventHandlers[outport], false
         if @outPorts.element.isAttached()
           @outPorts.element.send @element
