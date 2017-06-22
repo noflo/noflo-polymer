@@ -2,9 +2,13 @@ noflo = require 'noflo'
 
 toString = (x) -> ({}).toString.call x
 
-bindAllEvents = (element, port) ->
+bindAllEvents = (element, port, outports) ->
   originalFire = element.fire.bind element
   element.fire = (event, detail, toNode) ->
+    if event in outports
+      # Don't fire events with dedicated outports
+      originalFire event, detail, toNode
+      return
     groups = event.split ':'
     port.beginGroup grp for grp in groups
     port.send detail
@@ -67,7 +71,7 @@ module.exports = (name, inports, outports) ->
           return
         outports.forEach (outport) =>
           return if outport is 'element'
-          return bindAllEvents @element, @outPorts.event if outport is 'event'
+          return bindAllEvents @element, @outPorts.event, outports if outport is 'event'
           @element.addEventListener outport, @eventHandlers[outport], false
         if @outPorts.element.isAttached()
           @outPorts.element.send @element
