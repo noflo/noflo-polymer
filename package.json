@@ -13,8 +13,8 @@
   "license": "MIT",
   "dependencies": {
     "@polymer/polymer": "^2.2.0",
-    "noflo": "^1.0.0",
-    "webcomponents.js": "^0.7.23"
+    "@webcomponents/webcomponentsjs": "^1.0.17",
+    "noflo": "^1.0.0"
   },
   "noflo": {
     "loader": "lib/ComponentLoader"
