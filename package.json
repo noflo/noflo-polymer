@@ -30,7 +30,7 @@
     "grunt-contrib-uglify": "^3.0.1",
     "grunt-contrib-watch": "^1.0.0",
     "grunt-mocha-phantomjs": "^4.0.0",
-    "grunt-noflo-browser": "^1.0.1",
+    "grunt-noflo-browser": "^1.4.1",
     "json-loader": "^0.5.4",
     "mocha": "^4.0.0"
   },
