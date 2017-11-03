@@ -13,7 +13,7 @@
   "license": "MIT",
   "dependencies": {
     "@polymer/polymer": "^1.2.5-npm-test.2",
-    "noflo": "1.0.0",
+    "noflo": "^1.0.0",
     "webcomponents.js": "^0.7.23"
   },
   "noflo": {
