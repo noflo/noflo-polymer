@@ -21,6 +21,9 @@
   },
   "devDependencies": {
     "chai": "^4.0.0",
+    "eslint": "^4.10.0",
+    "eslint-config-airbnb-base": "^12.1.0",
+    "eslint-plugin-import": "^2.8.0",
     "grunt": "^1.0.1",
     "grunt-noflo-browser": "^1.5.0",
     "karma": "^1.7.1",
@@ -33,6 +36,7 @@
   },
   "scripts": {
     "build": "grunt build",
+    "pretest": "eslint lib/*.js",
     "test": "karma start"
   },
   "keywords": [
