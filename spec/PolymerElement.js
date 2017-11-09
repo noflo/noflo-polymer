@@ -2,17 +2,15 @@ const noflo = require('noflo');
 
 describe('Polymer component binding', function() {
   const loader = new noflo.ComponentLoader('/noflo-polymer');
-  before(done =>
-    window.addEventListener('WebComponentsReady', function() {
-      const fixtures = document.createElement('div');
-      fixtures.innerHTML = `\
+  before(done => {
+    const fixtures = document.createElement('div');
+    fixtures.innerHTML = `\
 <noflo-polymer name="test-element" inports="first second" outports="result"></noflo-polymer>
 <noflo-polymer name="test-element2" inports="first second" outports="event"></noflo-polymer>\
 `;
-      document.body.append(fixtures);
-      done();
-    })
-  );
+    document.body.append(fixtures);
+    done();
+  });
 
   describe('with new ComponentLoader', function() {
     it('there shouldn\'t be any registered components', () => chai.expect(loader.components).to.be.a('null'));
