@@ -2,20 +2,31 @@ module.exports = function(config) {
   const files = [
     'node_modules/@webcomponents/webcomponentsjs/webcomponents-lite.js',
     'browser/noflo-polymer.js',
-    'spec/*.js',
-    'spec/browser/*.js',
+    {
+      pattern: 'node_modules/@polymer/polymer/*.html',
+      included: false,
+      served: true,
+      watched: true,
+    },
+    {
+      pattern: 'node_modules/@polymer/polymer/**/*.html',
+      included: false,
+      served: true,
+      watched: true,
+    },
+    {
+      pattern: 'noflo-polymer/noflo-polymer.html',
+      included: true,
+      served: true,
+      watched: true,
+    },
     {
       pattern: 'spec/*.html',
-      included: false,
+      included: true,
       served: true,
       watched: true,
     },
-    {
-      pattern: 'noflo-polymer/*.html',
-      included: false,
-      served: true,
-      watched: true,
-    },
+    'spec/*.js',
   ];
 
   const configuration = {
