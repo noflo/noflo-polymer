@@ -4,6 +4,7 @@ describe('Polymer component binding', function() {
   const loader = new noflo.ComponentLoader('/noflo-polymer');
   before(done => {
     const fixtures = document.createElement('div');
+    fixtures.id = 'fixtures'
     fixtures.innerHTML = `\
 <noflo-polymer name="test-element" inports="first second" outports="result"></noflo-polymer>
 <noflo-polymer name="test-element2" inports="first second" outports="event"></noflo-polymer>\
