@@ -125,13 +125,11 @@ describe('Polymer component binding', function() {
       after(() => inst.outPorts.event.detach(event));
       it('should send to outport', function(done) {
         const groups = [];
-        event.on('begingroup', group => groups.push(group));
-        event.on('endgroup', () => groups.pop());
         event.on('data', function(data) {
-          chai.expect(data).to.equal(5);
-          chai.expect(groups).to.eql([
-            'result'
-          ]);
+          chai.expect(data).to.eql({
+            action: 'result',
+            payload: 5
+          });
           inst.outPorts.event.detach(event);
           done();
         });
