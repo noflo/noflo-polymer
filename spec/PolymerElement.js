@@ -296,4 +296,54 @@ describe('Polymer component binding', function() {
       });
     });
   });
+  describe('component events when bound via selector', function() {
+    let inst = null;
+    let selector = null;
+    let element = null;
+    let error = null;
+    after((done) => {
+      if (!inst) {
+        done();
+        return;
+      }
+      inst.shutdown(done);
+    });
+    describe('on component loading', function() {
+      it('should be possible to load', done =>
+        loader.load('polymer/test-element2', function(err, instance) {
+          if (err) { return done(err); }
+          chai.expect(instance).to.be.an('object');
+          inst = instance;
+          inst.start(done);
+        })
+      );
+    });
+    describe('on instantiation', () => {
+      before(() => {
+        selector = noflo.internalSocket.createSocket();
+        inst.inPorts.selector.attach(selector);
+      });
+      beforeEach(() => {
+        element = noflo.internalSocket.createSocket();
+        inst.outPorts.element.attach(element);
+        error = noflo.internalSocket.createSocket();
+        inst.outPorts.error.attach(error);
+      });
+      afterEach(() => {
+        inst.outPorts.element.detach(element);
+        inst.outPorts.error.detach(error);
+      });
+      it('should fire noflo:ready when bound', (done) => {
+        const el = document.createElement('test-element2');
+        el.id = 'selector-test-event'
+        document.querySelector('#fixtures').appendChild(el);
+        error.on('data', done);
+        el.addEventListener('noflo:ready', (event) => {
+          chai.expect(event.detail).to.equal(true);
+          done()
+        }, false);
+        selector.send('#selector-test-event');
+      });
+    });
+  });
 });
