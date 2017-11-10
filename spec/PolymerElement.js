@@ -42,13 +42,20 @@ describe('Polymer component binding', function() {
       second = noflo.internalSocket.createSocket();
       event = noflo.internalSocket.createSocket();
     });
+    after((done) => {
+      if (!inst) {
+        done();
+        return;
+      }
+      inst.shutdown(done);
+    });
     describe('on component loading', function() {
       it('should be possible to load', done =>
         loader.load('polymer/test-element', function(err, instance) {
           if (err) { return done(err); }
           chai.expect(instance).to.be.an('object');
           inst = instance;
-          done();
+          inst.start(done);
         })
       );
       it('should contain the required inPorts', () => {
@@ -58,11 +65,13 @@ describe('Polymer component binding', function() {
         chai.expect(inst.outPorts.ports).to.have.keys('element', 'error', 'result');
       });
     });
-    describe('on instantiation', function() {
-      it('should receive the element', function() {
+    describe('on instantiation', () => {
+      before(() => {
         inst.inPorts.element.attach(element);
         inst.inPorts.first.attach(first);
         inst.inPorts.second.attach(second);
+      });
+      it('should receive the element and activate', () => {
         const el = document.createElement('test-element');
         document.querySelector('#fixtures').appendChild(el);
         element.send(el);
@@ -111,13 +120,20 @@ describe('Polymer component binding', function() {
       first = noflo.internalSocket.createSocket();
       second = noflo.internalSocket.createSocket();
     });
+    after((done) => {
+      if (!inst) {
+        done();
+        return;
+      }
+      inst.shutdown(done);
+    });
     describe('on component loading', function() {
       it('should be possible to load', done =>
         loader.load('polymer/test-element2', function(err, instance) {
           if (err) { return done(err); }
           chai.expect(instance).to.be.an('object');
           inst = instance;
-          done();
+          inst.start(done);
         })
       );
       it('should contain the required inPorts', () => {
