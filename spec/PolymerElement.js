@@ -34,6 +34,8 @@ describe('Polymer component binding', function() {
     let second = null;
     let result = null;
     let event = null;
+    let error = null;
+
     before(function() {
       element = noflo.internalSocket.createSocket();
       first = noflo.internalSocket.createSocket();
@@ -49,8 +51,12 @@ describe('Polymer component binding', function() {
           done();
         })
       );
-      it('should contain the required inPorts', () => chai.expect(inst.inPorts.ports).to.have.keys('element', 'event', 'selector', 'first', 'second'));
-      it('should contain the required outPorts', () => chai.expect(inst.outPorts.ports).to.have.keys('element', 'error', 'result'));
+      it('should contain the required inPorts', () => {
+        chai.expect(inst.inPorts.ports).to.have.keys('element', 'event', 'selector', 'first', 'second');
+      });
+      it('should contain the required outPorts', () => {
+        chai.expect(inst.outPorts.ports).to.have.keys('element', 'error', 'result');
+      });
     });
     describe('on instantiation', function() {
       it('should receive the element', function() {
@@ -62,23 +68,35 @@ describe('Polymer component binding', function() {
         element.send(el);
         chai.expect(inst.element).to.be.ok;
       });
-      it('should receive the first value', () => first.send(2));
-      it('should have made it available via element props', () => chai.expect(inst.element.first).to.equal(2));
+      it('should receive the first value', () => {
+        first.send(2);
+      });
+      it('should have made it available via element props', () => {
+        chai.expect(inst.element.first).to.equal(2);
+      });
     });
     describe('on event', function() {
       beforeEach(function() {
         result = noflo.internalSocket.createSocket();
         inst.outPorts.result.attach(result);
+        error = noflo.internalSocket.createSocket();
+        inst.outPorts.error.attach(error);
       });
-      afterEach(() => inst.outPorts.result.detach(result));
+      afterEach(() => {
+        inst.outPorts.result.detach(result);
+        inst.outPorts.error.detach(error);
+      });
       it('should send to outport', function(done) {
+        error.on('data', done);
         result.on('data', function(data) {
           chai.expect(data).to.equal(5);
           done();
         });
         second.send(3);
       });
-      it('should have made it available via element props', () => chai.expect(inst.element.second).to.equal(3));
+      it('should have made it available via element props', () => {
+        chai.expect(inst.element.second).to.equal(3);
+      });
     });
   });
   describe('component with Fluxified event-port mapping', function() {
@@ -87,11 +105,11 @@ describe('Polymer component binding', function() {
     let first = null;
     let second = null;
     let event = null;
+    let error = null;
     before(function() {
       element = noflo.internalSocket.createSocket();
       first = noflo.internalSocket.createSocket();
       second = noflo.internalSocket.createSocket();
-      event = noflo.internalSocket.createSocket();
     });
     describe('on component loading', function() {
       it('should be possible to load', done =>
@@ -102,8 +120,12 @@ describe('Polymer component binding', function() {
           done();
         })
       );
-      it('should contain the required inPorts', () => chai.expect(inst.inPorts.ports).to.have.keys('element', 'event', 'selector', 'first', 'second'));
-      it('should contain the required outPorts', () => chai.expect(inst.outPorts.ports).to.have.keys('element', 'error', 'event'));
+      it('should contain the required inPorts', () => {
+        chai.expect(inst.inPorts.ports).to.have.keys('element', 'event', 'selector', 'first', 'second');
+      });
+      it('should contain the required outPorts', () => {
+        chai.expect(inst.outPorts.ports).to.have.keys('element', 'error', 'event');
+      });
     });
     describe('on instantiation', function() {
       it('should receive the element', function() {
@@ -121,10 +143,19 @@ describe('Polymer component binding', function() {
       });
     });
     describe('on event', function() {
-      before(() => inst.outPorts.event.attach(event));
-      after(() => inst.outPorts.event.detach(event));
+      before(() => {
+        event = noflo.internalSocket.createSocket();
+        inst.outPorts.event.attach(event);
+        error = noflo.internalSocket.createSocket();
+        inst.outPorts.error.attach(error);
+      });
+      after(() => {
+        inst.outPorts.event.detach(event);
+        inst.outPorts.error.detach(error);
+      });
       it('should send to outport', function(done) {
         const groups = [];
+        error.on('data', done);
         event.on('data', function(data) {
           chai.expect(data).to.eql({
             action: 'result',
@@ -137,6 +168,7 @@ describe('Polymer component binding', function() {
         chai.expect(inst.element.second).to.equal(3);
       });
       it('should still also fire the event', function(done) {
+        error.on('data', done);
         inst.element.addEventListener('result', function(event) {
           chai.expect(event.detail).to.equal(8);
           done();
