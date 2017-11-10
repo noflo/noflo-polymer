@@ -195,4 +195,55 @@ describe('Polymer component binding', function() {
       });
     });
   });
+  describe('component bound via selector', function() {
+    let inst = null;
+    let selector = null;
+    let element = null;
+    let error = null;
+    after((done) => {
+      if (!inst) {
+        done();
+        return;
+      }
+      inst.shutdown(done);
+    });
+    describe('on component loading', function() {
+      it('should be possible to load', done =>
+        loader.load('polymer/test-element2', function(err, instance) {
+          if (err) { return done(err); }
+          chai.expect(instance).to.be.an('object');
+          inst = instance;
+          inst.start(done);
+        })
+      );
+    });
+    describe('on instantiation', () => {
+      before(() => {
+        selector = noflo.internalSocket.createSocket();
+        inst.inPorts.selector.attach(selector);
+      });
+      beforeEach(() => {
+        element = noflo.internalSocket.createSocket();
+        inst.outPorts.element.attach(element);
+        error = noflo.internalSocket.createSocket();
+        inst.outPorts.error.attach(error);
+      });
+      afterEach(() => {
+        inst.outPorts.element.detach(element);
+        inst.outPorts.error.detach(error);
+      });
+      it('should send the element out', (done) => {
+        const el = document.createElement('test-element2');
+        el.id = 'selector-test'
+        document.querySelector('#fixtures').appendChild(el);
+        error.on('data', done);
+        element.on('data', (boundElement) => {
+          chai.expect(boundElement).to.equal(el);
+          chai.expect(boundElement).to.equal(inst.element);
+          done();
+        });
+        selector.send('#selector-test');
+      });
+    });
+  });
 });
