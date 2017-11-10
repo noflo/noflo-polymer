@@ -39,6 +39,9 @@ After this you'll have a `polymer/the-graph` component available with the follow
 
 ## Changes
 
+* 2.0.1 (November 10 2017)
+  - Made noflo-polymer not import `polymer.html` since paths may be different in production use. Consumers must import it themselves
+  - Added a `true` payload to the `noflo:ready` event emitted when a Polymer element is bound to a NoFlo component instance
 * 2.0.0 (November 10 2017)
   - Ported components from CoffeeScript to ES6
   - Upgraded Polymer from 1.x to 2.x
