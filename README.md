@@ -2,9 +2,19 @@
 
 This project provides a binding between [Polymer](http://www.polymer-project.org/) web components and [NoFlo](http://noflojs.org/), allowing Polymer components to be used as components in a NoFlo graph. The attributes of a Polymer element become the input ports of the NoFlo component, and the events emitted by the Polymer element become the output ports.
 
+## Status
+
+In production with [noflo-ui](https://github.com/noflo/noflo-ui)
+
 ## Installation
 
-Add this component to your dependencies in `component.json`. In additionally you need a working installation of Polymer.
+Add this component to your dependencies:
+
+```bash
+$ npm install noflo-polymer --save
+```
+
+In addit you need a working setup of Polymer and NoFlo.
 
 ## Usage
 
