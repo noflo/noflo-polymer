@@ -36,3 +36,9 @@ After this you'll have a `polymer/the-graph` component available with the follow
 * Output
   - element (the same element instance, passed through
   - changed (sends output when the element fires a `changed` event)
+
+## Changes
+
+* 2.0.0 (November 10 2017)
+  - Ported components from CoffeeScript to ES6
+  - Upgraded Polymer from 1.x to 2.x
