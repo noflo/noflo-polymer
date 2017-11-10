@@ -2,6 +2,7 @@ module.exports = function(config) {
   const files = [
     'node_modules/@webcomponents/webcomponentsjs/webcomponents-lite.js',
     'browser/noflo-polymer.js',
+    'node_modules/@polymer/polymer/polymer.html',
     {
       pattern: 'node_modules/@polymer/polymer/*.html',
       included: false,
