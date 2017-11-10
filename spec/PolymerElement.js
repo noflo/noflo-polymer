@@ -71,6 +71,17 @@ describe('Polymer component binding', function() {
         inst.inPorts.first.attach(first);
         inst.inPorts.second.attach(second);
       });
+      it('should fail if the element is not an object', (done) => {
+        error = noflo.internalSocket.createSocket();
+        inst.outPorts.error.attach(error);
+        error.on('data', (err) => {
+          chai.expect(err).to.be.an('error');
+          chai.expect(err.message).to.contain('is not an object');
+          inst.outPorts.error.detach(error);
+          done()
+        });
+        element.send('Fail!');
+      });
       it('should receive the element and activate', () => {
         const el = document.createElement('test-element');
         document.querySelector('#fixtures').appendChild(el);
@@ -232,6 +243,31 @@ describe('Polymer component binding', function() {
         inst.outPorts.element.detach(element);
         inst.outPorts.error.detach(error);
       });
+      it('should fail if the element doesn\'t exist', (done) => {
+        error.on('data', (err) => {
+          chai.expect(err).to.be.an('error');
+          chai.expect(err.message).to.contain('No element matching');
+          done()
+        });
+        element.on('data', () => {
+          done(new Error('Received unexpected data'));
+        });
+        selector.send('#element-not-found');
+      });
+      it('should fail to bind to a wrong element', (done) => {
+        const el = document.createElement('test-element');
+        el.id = 'wrong-tagname'
+        document.querySelector('#fixtures').appendChild(el);
+        error.on('data', (err) => {
+          chai.expect(err).to.be.an('error');
+          chai.expect(err.message).to.contain('element instead of TEST-ELEMENT2');
+          done()
+        });
+        element.on('data', () => {
+          done(new Error('Received unexpected data'));
+        });
+        selector.send('#wrong-tagname');
+      });
       it('should send the element out', (done) => {
         const el = document.createElement('test-element2');
         el.id = 'selector-test'
@@ -243,6 +279,20 @@ describe('Polymer component binding', function() {
           done();
         });
         selector.send('#selector-test');
+      });
+      it('should fail to re-bind to a different element', (done) => {
+        const el = document.createElement('test-element2');
+        el.id = 'selector-test2'
+        document.querySelector('#fixtures').appendChild(el);
+        error.on('data', (err) => {
+          chai.expect(err).to.be.an('error');
+          chai.expect(err.message).to.contain('already bound');
+          done()
+        });
+        element.on('data', () => {
+          done(new Error('Received unexpected data'));
+        });
+        selector.send('#selector-test2');
       });
     });
   });
