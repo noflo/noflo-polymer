@@ -1,10 +1,10 @@
 const noflo = require('noflo');
 
-describe('Polymer component binding', function() {
+describe('Polymer component binding', () => {
   const loader = new noflo.ComponentLoader('/noflo-polymer');
-  before(done => {
+  before((done) => {
     const fixtures = document.createElement('div');
-    fixtures.id = 'fixtures'
+    fixtures.id = 'fixtures';
     fixtures.innerHTML = `\
 <noflo-polymer name="test-element" inports="first second" outports="result"></noflo-polymer>
 <noflo-polymer name="test-element2" inports="first second" outports="event"></noflo-polymer>\
@@ -13,21 +13,19 @@ describe('Polymer component binding', function() {
     done();
   });
 
-  describe('with new ComponentLoader', function() {
+  describe('with new ComponentLoader', () => {
     it('there shouldn\'t be any registered components', () => chai.expect(loader.components).to.be.a('null'));
-    it('should be able to list installed components', done =>
-      loader.listComponents(function() {
-        chai.expect(loader.components).to.be.an('object');
-        chai.expect(loader.components).not.to.be.empty;
-        done();
-      })
-    );
-    it('should have the Polymer-built components registered', function() {
+    it('should be able to list installed components', done => loader.listComponents(() => {
+      chai.expect(loader.components).to.be.an('object');
+      chai.expect(loader.components).not.to.be.empty;
+      done();
+    }));
+    it('should have the Polymer-built components registered', () => {
       chai.expect(loader.components['polymer/test-element']).to.be.a('function');
       chai.expect(loader.components['polymer/test-element2']).to.be.a('function');
     });
   });
-  describe('component with direct event-port mapping', function() {
+  describe('component with direct event-port mapping', () => {
     let inst = null;
     let element = null;
     let first = null;
@@ -36,7 +34,7 @@ describe('Polymer component binding', function() {
     let event = null;
     let error = null;
 
-    before(function() {
+    before(() => {
       element = noflo.internalSocket.createSocket();
       first = noflo.internalSocket.createSocket();
       second = noflo.internalSocket.createSocket();
@@ -49,15 +47,13 @@ describe('Polymer component binding', function() {
       }
       inst.shutdown(done);
     });
-    describe('on component loading', function() {
-      it('should be possible to load', done =>
-        loader.load('polymer/test-element', function(err, instance) {
-          if (err) { return done(err); }
-          chai.expect(instance).to.be.an('object');
-          inst = instance;
-          inst.start(done);
-        })
-      );
+    describe('on component loading', () => {
+      it('should be possible to load', done => loader.load('polymer/test-element', (err, instance) => {
+        if (err) { return done(err); }
+        chai.expect(instance).to.be.an('object');
+        inst = instance;
+        inst.start(done);
+      }));
       it('should contain the required inPorts', () => {
         chai.expect(inst.inPorts.ports).to.have.keys('element', 'event', 'selector', 'first', 'second');
       });
@@ -78,7 +74,7 @@ describe('Polymer component binding', function() {
           chai.expect(err).to.be.an('error');
           chai.expect(err.message).to.contain('is not an object');
           inst.outPorts.error.detach(error);
-          done()
+          done();
         });
         element.send('Fail!');
       });
@@ -95,8 +91,8 @@ describe('Polymer component binding', function() {
         chai.expect(inst.element.first).to.equal(2);
       });
     });
-    describe('on event', function() {
-      beforeEach(function() {
+    describe('on event', () => {
+      beforeEach(() => {
         result = noflo.internalSocket.createSocket();
         inst.outPorts.result.attach(result);
         error = noflo.internalSocket.createSocket();
@@ -106,9 +102,9 @@ describe('Polymer component binding', function() {
         inst.outPorts.result.detach(result);
         inst.outPorts.error.detach(error);
       });
-      it('should send to outport', function(done) {
+      it('should send to outport', (done) => {
         error.on('data', done);
-        result.on('data', function(data) {
+        result.on('data', (data) => {
           chai.expect(data).to.equal(5);
           done();
         });
@@ -119,14 +115,14 @@ describe('Polymer component binding', function() {
       });
     });
   });
-  describe('component with Fluxified event-port mapping', function() {
+  describe('component with Fluxified event-port mapping', () => {
     let inst = null;
     let element = null;
     let first = null;
     let second = null;
     let event = null;
     let error = null;
-    before(function() {
+    before(() => {
       element = noflo.internalSocket.createSocket();
       first = noflo.internalSocket.createSocket();
       second = noflo.internalSocket.createSocket();
@@ -138,15 +134,13 @@ describe('Polymer component binding', function() {
       }
       inst.shutdown(done);
     });
-    describe('on component loading', function() {
-      it('should be possible to load', done =>
-        loader.load('polymer/test-element2', function(err, instance) {
-          if (err) { return done(err); }
-          chai.expect(instance).to.be.an('object');
-          inst = instance;
-          inst.start(done);
-        })
-      );
+    describe('on component loading', () => {
+      it('should be possible to load', done => loader.load('polymer/test-element2', (err, instance) => {
+        if (err) { return done(err); }
+        chai.expect(instance).to.be.an('object');
+        inst = instance;
+        inst.start(done);
+      }));
       it('should contain the required inPorts', () => {
         chai.expect(inst.inPorts.ports).to.have.keys('element', 'event', 'selector', 'first', 'second');
       });
@@ -154,8 +148,8 @@ describe('Polymer component binding', function() {
         chai.expect(inst.outPorts.ports).to.have.keys('element', 'error', 'event');
       });
     });
-    describe('on instantiation', function() {
-      it('should receive the element', function() {
+    describe('on instantiation', () => {
+      it('should receive the element', () => {
         inst.inPorts.element.attach(element);
         inst.inPorts.first.attach(first);
         inst.inPorts.second.attach(second);
@@ -164,12 +158,12 @@ describe('Polymer component binding', function() {
         element.send(el);
         chai.expect(inst.element).to.be.ok;
       });
-      it('should receive the first value', function() {
+      it('should receive the first value', () => {
         first.send(2);
         chai.expect(inst.element.first).to.equal(2);
       });
     });
-    describe('on event', function() {
+    describe('on event', () => {
       before(() => {
         event = noflo.internalSocket.createSocket();
         inst.outPorts.event.attach(event);
@@ -180,13 +174,13 @@ describe('Polymer component binding', function() {
         inst.outPorts.event.detach(event);
         inst.outPorts.error.detach(error);
       });
-      it('should send to outport', function(done) {
+      it('should send to outport', (done) => {
         const groups = [];
         error.on('data', done);
-        event.on('data', function(data) {
+        event.on('data', (data) => {
           chai.expect(data).to.eql({
             action: 'result',
-            payload: 5
+            payload: 5,
           });
           inst.outPorts.event.detach(event);
           done();
@@ -194,19 +188,19 @@ describe('Polymer component binding', function() {
         second.send(3);
         chai.expect(inst.element.second).to.equal(3);
       });
-      it('should still also fire the event', function(done) {
+      it('should still also fire the event', (done) => {
         error.on('data', done);
-        inst.element.addEventListener('result', function(event) {
+        inst.element.addEventListener('result', (event) => {
           chai.expect(event.detail).to.equal(8);
           done();
-        }
-        , false);
+        },
+        false);
         second.send(6);
         chai.expect(inst.element.second).to.equal(6);
       });
     });
   });
-  describe('component bound via selector', function() {
+  describe('component bound via selector', () => {
     let inst = null;
     let selector = null;
     let element = null;
@@ -218,15 +212,13 @@ describe('Polymer component binding', function() {
       }
       inst.shutdown(done);
     });
-    describe('on component loading', function() {
-      it('should be possible to load', done =>
-        loader.load('polymer/test-element2', function(err, instance) {
-          if (err) { return done(err); }
-          chai.expect(instance).to.be.an('object');
-          inst = instance;
-          inst.start(done);
-        })
-      );
+    describe('on component loading', () => {
+      it('should be possible to load', done => loader.load('polymer/test-element2', (err, instance) => {
+        if (err) { return done(err); }
+        chai.expect(instance).to.be.an('object');
+        inst = instance;
+        inst.start(done);
+      }));
     });
     describe('on instantiation', () => {
       before(() => {
@@ -247,7 +239,7 @@ describe('Polymer component binding', function() {
         error.on('data', (err) => {
           chai.expect(err).to.be.an('error');
           chai.expect(err.message).to.contain('No element matching');
-          done()
+          done();
         });
         element.on('data', () => {
           done(new Error('Received unexpected data'));
@@ -256,12 +248,12 @@ describe('Polymer component binding', function() {
       });
       it('should fail to bind to a wrong element', (done) => {
         const el = document.createElement('test-element');
-        el.id = 'wrong-tagname'
+        el.id = 'wrong-tagname';
         document.querySelector('#fixtures').appendChild(el);
         error.on('data', (err) => {
           chai.expect(err).to.be.an('error');
           chai.expect(err.message).to.contain('element instead of TEST-ELEMENT2');
-          done()
+          done();
         });
         element.on('data', () => {
           done(new Error('Received unexpected data'));
@@ -270,7 +262,7 @@ describe('Polymer component binding', function() {
       });
       it('should send the element out', (done) => {
         const el = document.createElement('test-element2');
-        el.id = 'selector-test'
+        el.id = 'selector-test';
         document.querySelector('#fixtures').appendChild(el);
         error.on('data', done);
         element.on('data', (boundElement) => {
@@ -282,12 +274,12 @@ describe('Polymer component binding', function() {
       });
       it('should fail to re-bind to a different element', (done) => {
         const el = document.createElement('test-element2');
-        el.id = 'selector-test2'
+        el.id = 'selector-test2';
         document.querySelector('#fixtures').appendChild(el);
         error.on('data', (err) => {
           chai.expect(err).to.be.an('error');
           chai.expect(err.message).to.contain('already bound');
-          done()
+          done();
         });
         element.on('data', () => {
           done(new Error('Received unexpected data'));
@@ -296,7 +288,7 @@ describe('Polymer component binding', function() {
       });
     });
   });
-  describe('component events when bound via selector', function() {
+  describe('component events when bound via selector', () => {
     let inst = null;
     let selector = null;
     let element = null;
@@ -308,15 +300,13 @@ describe('Polymer component binding', function() {
       }
       inst.shutdown(done);
     });
-    describe('on component loading', function() {
-      it('should be possible to load', done =>
-        loader.load('polymer/test-element2', function(err, instance) {
-          if (err) { return done(err); }
-          chai.expect(instance).to.be.an('object');
-          inst = instance;
-          inst.start(done);
-        })
-      );
+    describe('on component loading', () => {
+      it('should be possible to load', done => loader.load('polymer/test-element2', (err, instance) => {
+        if (err) { return done(err); }
+        chai.expect(instance).to.be.an('object');
+        inst = instance;
+        inst.start(done);
+      }));
     });
     describe('on instantiation', () => {
       before(() => {
@@ -335,12 +325,12 @@ describe('Polymer component binding', function() {
       });
       it('should fire noflo:ready when bound', (done) => {
         const el = document.createElement('test-element2');
-        el.id = 'selector-test-event'
+        el.id = 'selector-test-event';
         document.querySelector('#fixtures').appendChild(el);
         error.on('data', done);
         el.addEventListener('noflo:ready', (event) => {
           chai.expect(event.detail).to.equal(true);
-          done()
+          done();
         }, false);
         selector.send('#selector-test-event');
       });
