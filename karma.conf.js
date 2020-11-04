@@ -1,31 +1,37 @@
-module.exports = function(config) {
+module.exports = (config) => {
   const files = [
-    'node_modules/@webcomponents/webcomponentsjs/webcomponents-lite.js',
+    'node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js',
+    {
+      pattern: 'node_modules/@webcomponents/webcomponentsjs/*.js',
+      included: false,
+      served: true,
+    },
     'browser/noflo-polymer.js',
-    'node_modules/@polymer/polymer/polymer.html',
     {
-      pattern: 'node_modules/@polymer/polymer/*.html',
+      pattern: 'node_modules/@polymer/polymer/*.js',
       included: false,
       served: true,
-      watched: true,
+      watched: false,
     },
     {
-      pattern: 'node_modules/@polymer/polymer/**/*.html',
+      pattern: 'node_modules/@polymer/polymer/**/*.js',
       included: false,
       served: true,
-      watched: true,
+      watched: false,
     },
     {
-      pattern: 'noflo-polymer/noflo-polymer.html',
+      pattern: 'noflo-polymer/noflo-polymer.js',
       included: true,
       served: true,
       watched: true,
+      type: 'module',
     },
     {
-      pattern: 'spec/*.html',
+      pattern: 'spec/elements/*.js',
       included: true,
       served: true,
       watched: true,
+      type: 'module',
     },
     'spec/*.js',
   ];
@@ -46,10 +52,12 @@ module.exports = function(config) {
     // start these browsers
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
     browsers: ['ChromeHeadless'],
-    //browsers: [],
+    // browsers: ['Chrome'],
+    // browsers: [],
     // Continuous Integration mode
     // if true, Karma captures browsers, runs the tests and exits
     singleRun: true,
+    // singleRun: false,
     // Concurrency level
     // how many browser should be started simultaneous
     concurrency: Infinity

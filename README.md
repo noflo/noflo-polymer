@@ -1,4 +1,4 @@
-# noflo-polymer [![Build Status](https://secure.travis-ci.org/noflo/noflo-polymer.png?branch=master)](http://travis-ci.org/noflo/noflo-polymer)
+# noflo-polymer
 
 This project provides a binding between [Polymer](http://www.polymer-project.org/) web components and [NoFlo](http://noflojs.org/), allowing Polymer components to be used as components in a NoFlo graph. The attributes of a Polymer element become the input ports of the NoFlo component, and the events emitted by the Polymer element become the output ports.
 
