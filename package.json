@@ -1,7 +1,7 @@
 {
   "name": "noflo-polymer",
   "description": "Polymer wrapper component for NoFlo",
-  "version": "2.0.1",
+  "version": "3.0.0",
   "author": {
     "name": "Henri Bergius",
     "email": "henri.bergius@iki.fi"
@@ -21,17 +21,17 @@
   },
   "devDependencies": {
     "chai": "^4.0.0",
-    "eslint": "^5.0.0",
+    "eslint": "^7.12.1",
     "eslint-config-airbnb-base": "^13.0.0",
     "eslint-plugin-import": "^2.8.0",
     "grunt": "^1.0.1",
     "grunt-noflo-browser": "^1.5.0",
     "karma": "^4.0.0",
     "karma-chai": "^0.1.0",
-    "karma-chrome-launcher": "^2.2.0",
+    "karma-chrome-launcher": "^3.1.0",
     "karma-mocha": "^1.3.0",
     "karma-mocha-reporter": "^2.2.5",
-    "mocha": "^5.0.0",
+    "mocha": "^8.2.1",
     "puppeteer": "^1.0.0"
   },
   "scripts": {
