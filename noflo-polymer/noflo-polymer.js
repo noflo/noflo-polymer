@@ -1,4 +1,4 @@
-import { PolymerElement } from '../node_modules/@polymer/polymer';
+import { PolymerElement } from '../node_modules/@polymer/polymer/polymer-element.js';
 
 class NofloPolymer extends PolymerElement {
   static get properties() {
