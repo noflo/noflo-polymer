@@ -1,7 +1,7 @@
 {
   "name": "noflo-polymer",
   "description": "Polymer wrapper component for NoFlo",
-  "version": "2.0.1",
+  "version": "3.0.0",
   "author": {
     "name": "Henri Bergius",
     "email": "henri.bergius@iki.fi"
