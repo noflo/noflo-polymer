@@ -36,7 +36,8 @@
   },
   "scripts": {
     "build": "grunt build",
-    "pretest": "eslint lib/*.js",
+    "lint": "eslint lib/*.js",
+    "pretest": "npm run lint && npm run build",
     "test": "karma start"
   },
   "keywords": [
