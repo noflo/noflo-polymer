@@ -15,7 +15,7 @@ describe('Polymer component binding', () => {
 
   describe('with new ComponentLoader', () => {
     it('there shouldn\'t be any registered components', () => chai.expect(loader.components).to.be.a('null'));
-    it('should be able to list installed components', done => loader.listComponents(() => {
+    it('should be able to list installed components', (done) => loader.listComponents(() => {
       chai.expect(loader.components).to.be.an('object');
       chai.expect(loader.components).not.to.be.empty;
       done();
@@ -48,7 +48,7 @@ describe('Polymer component binding', () => {
       inst.shutdown(done);
     });
     describe('on component loading', () => {
-      it('should be possible to load', done => loader.load('polymer/test-element', (err, instance) => {
+      it('should be possible to load', (done) => loader.load('polymer/test-element', (err, instance) => {
         if (err) { return done(err); }
         chai.expect(instance).to.be.an('object');
         inst = instance;
@@ -135,7 +135,7 @@ describe('Polymer component binding', () => {
       inst.shutdown(done);
     });
     describe('on component loading', () => {
-      it('should be possible to load', done => loader.load('polymer/test-element2', (err, instance) => {
+      it('should be possible to load', (done) => loader.load('polymer/test-element2', (err, instance) => {
         if (err) { return done(err); }
         chai.expect(instance).to.be.an('object');
         inst = instance;
@@ -213,7 +213,7 @@ describe('Polymer component binding', () => {
       inst.shutdown(done);
     });
     describe('on component loading', () => {
-      it('should be possible to load', done => loader.load('polymer/test-element2', (err, instance) => {
+      it('should be possible to load', (done) => loader.load('polymer/test-element2', (err, instance) => {
         if (err) { return done(err); }
         chai.expect(instance).to.be.an('object');
         inst = instance;
@@ -301,7 +301,7 @@ describe('Polymer component binding', () => {
       inst.shutdown(done);
     });
     describe('on component loading', () => {
-      it('should be possible to load', done => loader.load('polymer/test-element2', (err, instance) => {
+      it('should be possible to load', (done) => loader.load('polymer/test-element2', (err, instance) => {
         if (err) { return done(err); }
         chai.expect(instance).to.be.an('object');
         inst = instance;
