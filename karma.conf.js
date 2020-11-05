@@ -60,8 +60,8 @@ module.exports = (config) => {
     // singleRun: false,
     // Concurrency level
     // how many browser should be started simultaneous
-    concurrency: Infinity
+    concurrency: Infinity,
   };
 
   config.set(configuration);
-}
+};
