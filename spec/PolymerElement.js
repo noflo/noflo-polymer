@@ -15,11 +15,12 @@ describe('Polymer component binding', () => {
 
   describe('with new ComponentLoader', () => {
     it('there shouldn\'t be any registered components', () => chai.expect(loader.components).to.be.a('null'));
-    it('should be able to list installed components', (done) => loader.listComponents(() => {
-      chai.expect(loader.components).to.be.an('object');
-      chai.expect(loader.components).not.to.be.empty;
-      done();
-    }));
+    it('should be able to list installed components', () => loader
+      .listComponents()
+      .then(() => {
+        chai.expect(loader.components).to.be.an('object');
+        chai.expect(loader.components).not.to.be.empty;
+      }));
     it('should have the Polymer-built components registered', () => {
       chai.expect(loader.components['polymer/test-element']).to.be.a('function');
       chai.expect(loader.components['polymer/test-element2']).to.be.a('function');
@@ -40,20 +41,20 @@ describe('Polymer component binding', () => {
       second = noflo.internalSocket.createSocket();
       event = noflo.internalSocket.createSocket();
     });
-    after((done) => {
+    after(() => {
       if (!inst) {
-        done();
-        return;
+        return Promise.resolve();
       }
-      inst.shutdown(done);
+      return inst.shutdown();
     });
     describe('on component loading', () => {
-      it('should be possible to load', (done) => loader.load('polymer/test-element', (err, instance) => {
-        if (err) { return done(err); }
-        chai.expect(instance).to.be.an('object');
-        inst = instance;
-        inst.start(done);
-      }));
+      it('should be possible to load', (done) => loader
+        .load('polymer/test-element')
+        .then((instance) => {
+          chai.expect(instance).to.be.an('object');
+          inst = instance;
+          return inst.start();
+        }));
       it('should contain the required inPorts', () => {
         chai.expect(inst.inPorts.ports).to.have.keys('element', 'event', 'selector', 'first', 'second');
       });
@@ -127,20 +128,20 @@ describe('Polymer component binding', () => {
       first = noflo.internalSocket.createSocket();
       second = noflo.internalSocket.createSocket();
     });
-    after((done) => {
+    after(() => {
       if (!inst) {
-        done();
-        return;
+        return Promise.resolve();
       }
-      inst.shutdown(done);
+      return inst.shutdown();
     });
     describe('on component loading', () => {
-      it('should be possible to load', (done) => loader.load('polymer/test-element2', (err, instance) => {
-        if (err) { return done(err); }
-        chai.expect(instance).to.be.an('object');
-        inst = instance;
-        inst.start(done);
-      }));
+      it('should be possible to load', () => loader
+        .load('polymer/test-element2')
+        .then((instance) => {
+          chai.expect(instance).to.be.an('object');
+          inst = instance;
+          return inst.start();
+        }));
       it('should contain the required inPorts', () => {
         chai.expect(inst.inPorts.ports).to.have.keys('element', 'event', 'selector', 'first', 'second');
       });
@@ -205,20 +206,20 @@ describe('Polymer component binding', () => {
     let selector = null;
     let element = null;
     let error = null;
-    after((done) => {
+    after(() => {
       if (!inst) {
-        done();
-        return;
+        return Promise.resolve();
       }
-      inst.shutdown(done);
+      return inst.shutdown();
     });
     describe('on component loading', () => {
-      it('should be possible to load', (done) => loader.load('polymer/test-element2', (err, instance) => {
-        if (err) { return done(err); }
-        chai.expect(instance).to.be.an('object');
-        inst = instance;
-        inst.start(done);
-      }));
+      it('should be possible to load', () => loader
+        .load('polymer/test-element2')
+        .then((instance) => {
+          chai.expect(instance).to.be.an('object');
+          inst = instance;
+          return inst.start();
+        }));
     });
     describe('on instantiation', () => {
       before(() => {
@@ -293,20 +294,20 @@ describe('Polymer component binding', () => {
     let selector = null;
     let element = null;
     let error = null;
-    after((done) => {
+    after(() => {
       if (!inst) {
-        done();
-        return;
+        return Promise.resolve();
       }
-      inst.shutdown(done);
+      return inst.shutdown();
     });
     describe('on component loading', () => {
-      it('should be possible to load', (done) => loader.load('polymer/test-element2', (err, instance) => {
-        if (err) { return done(err); }
-        chai.expect(instance).to.be.an('object');
-        inst = instance;
-        inst.start(done);
-      }));
+      it('should be possible to load', (done) => loader
+        .load('polymer/test-element2')
+        .then((instance) => {
+          chai.expect(instance).to.be.an('object');
+          inst = instance;
+          inst.start(done);
+        }));
     });
     describe('on instantiation', () => {
       before(() => {
