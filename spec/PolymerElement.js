@@ -48,7 +48,7 @@ describe('Polymer component binding', () => {
       return inst.shutdown();
     });
     describe('on component loading', () => {
-      it('should be possible to load', (done) => loader
+      it('should be possible to load', () => loader
         .load('polymer/test-element')
         .then((instance) => {
           chai.expect(instance).to.be.an('object');
@@ -301,12 +301,12 @@ describe('Polymer component binding', () => {
       return inst.shutdown();
     });
     describe('on component loading', () => {
-      it('should be possible to load', (done) => loader
+      it('should be possible to load', () => loader
         .load('polymer/test-element2')
         .then((instance) => {
           chai.expect(instance).to.be.an('object');
           inst = instance;
-          inst.start(done);
+          return inst.start();
         }));
     });
     describe('on instantiation', () => {
