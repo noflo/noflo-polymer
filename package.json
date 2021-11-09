@@ -22,7 +22,7 @@
   "devDependencies": {
     "chai": "^4.0.0",
     "eslint": "^7.12.1",
-    "eslint-config-airbnb-base": "^14.2.0",
+    "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-import": "^2.8.0",
     "grunt": "^1.0.1",
     "grunt-noflo-browser": "^2.0.2",
